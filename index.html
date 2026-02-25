@@ -755,6 +755,124 @@ canvas#hero-canvas {
 }
 
 /* ════════════════════════════════════════════
+   SERVICE AREA
+════════════════════════════════════════════ */
+#service-area { background: var(--bg); position: relative; overflow: hidden; }
+#service-area::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(255,193,7,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.service-area-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+.service-area-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 80px;
+}
+.service-area-headline {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 4.5vw, 64px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+.service-area-headline em { font-style: italic; color: var(--accent); }
+.service-area-intro {
+  font-size: 15px;
+  color: var(--off-white);
+  line-height: 1.8;
+  font-weight: 300;
+}
+.counties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-bottom: 2px;
+}
+.county-card {
+  background: var(--surface);
+  padding: 40px 40px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.county-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease);
+}
+.county-card:hover { background: #161e28; }
+.county-card:hover::before { transform: scaleX(1); }
+.county-name {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.county-name::before {
+  content: '';
+  display: block;
+  width: 20px; height: 1px;
+  background: var(--accent);
+}
+.cities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.city-tag {
+  display: inline-block;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--off-white);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.city-tag:hover {
+  border-color: rgba(255,193,7,0.4);
+  color: var(--accent);
+  background: rgba(255,193,7,0.04);
+}
+.service-note {
+  background: var(--surface);
+  padding: 28px 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 300;
+}
+.service-note-dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+@media (max-width: 1024px) {
+  .service-area-header { grid-template-columns: 1fr; gap: 32px; }
+  .counties-grid { grid-template-columns: 1fr; }
+}
+
+/* ════════════════════════════════════════════
    FOOTER
 ════════════════════════════════════════════ */
 footer {
@@ -914,6 +1032,7 @@ footer {
     <li><a href="#process-section">Process</a></li>
     <li><a href="#about-section">About</a></li>
     <li><a href="#featured-section">Reports</a></li>
+    <li><a href="#service-area">Service Area</a></li>
     <li><a href="#contact-section">Contact</a></li>
     <li><a href="#contact-section" class="nav-cta">Request Appraisal</a></li>
   </ul>
@@ -961,8 +1080,8 @@ footer {
       <div class="stat-label">Client Satisfaction</div>
     </div>
     <div class="stat-item reveal" data-delay="2">
-      <div class="stat-num"><span class="accent">#</span><span class="count" data-target="4328">0</span></div>
-      <div class="stat-label">CRA License Number</div>
+      <div class="stat-num"><span class="count" data-target="3">0</span><span class="accent">+</span></div>
+      <div class="stat-label">Counties Served</div>
     </div>
     <div class="stat-item reveal" data-delay="3">
       <div class="stat-num"><span class="count" data-target="48">0</span><span class="accent">hr</span></div>
@@ -1104,6 +1223,73 @@ footer {
   </div>
 </section>
 
+<!-- SERVICE AREA -->
+<section id="service-area" class="section-full">
+  <div class="service-area-inner">
+    <div class="service-area-header">
+      <div class="reveal-left">
+        <div class="section-tag">Service Area</div>
+        <h2 class="service-area-headline">Proudly serving<br>the <em>Treasure Valley</em></h2>
+      </div>
+      <p class="service-area-intro reveal-right">
+        TKM Appraisals provides certified residential appraisal services across Ada County, Canyon County, and southern Gem County. Whether you're in Boise or a rural community in Gem County, we bring the same precision and care to every assignment.
+      </p>
+    </div>
+
+    <div class="counties-grid">
+
+      <div class="county-card reveal" data-delay="1">
+        <div class="county-name">Ada County</div>
+        <div class="cities-list">
+          <span class="city-tag">Boise</span>
+          <span class="city-tag">Meridian</span>
+          <span class="city-tag">Nampa</span>
+          <span class="city-tag">Eagle</span>
+          <span class="city-tag">Star</span>
+          <span class="city-tag">Kuna</span>
+          <span class="city-tag">Garden City</span>
+          <span class="city-tag">Hidden Springs</span>
+          <span class="city-tag">Micron</span>
+          <span class="city-tag">Huston</span>
+        </div>
+      </div>
+
+      <div class="county-card reveal" data-delay="2">
+        <div class="county-name">Canyon County</div>
+        <div class="cities-list">
+          <span class="city-tag">Caldwell</span>
+          <span class="city-tag">Nampa</span>
+          <span class="city-tag">Middleton</span>
+          <span class="city-tag">Notus</span>
+          <span class="city-tag">Parma</span>
+          <span class="city-tag">Wilder</span>
+          <span class="city-tag">Greenleaf</span>
+          <span class="city-tag">Melba</span>
+          <span class="city-tag">Marsing</span>
+          <span class="city-tag">Homedale</span>
+        </div>
+      </div>
+
+      <div class="county-card reveal" data-delay="3">
+        <div class="county-name">Southern Gem County</div>
+        <div class="cities-list">
+          <span class="city-tag">Emmett</span>
+          <span class="city-tag">Letha</span>
+          <span class="city-tag">Montour</span>
+          <span class="city-tag">Sweet</span>
+          <span class="city-tag">Ola</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="service-note reveal">
+      <div class="service-note-dot"></div>
+      Not sure if your property falls within our service area? Call or email — we're happy to discuss coverage for your specific location.
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact-section" class="section-full">
   <div class="section" style="padding-top:0;padding-bottom:0;">
@@ -1201,6 +1387,7 @@ footer {
           <li><a href="#process-section">Process</a></li>
           <li><a href="#about-section">About</a></li>
           <li><a href="#featured-section">Reports</a></li>
+          <li><a href="#service-area">Service Area</a></li>
           <li><a href="#contact-section">Contact</a></li>
         </ul>
       </div>

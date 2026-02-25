@@ -613,38 +613,169 @@ canvas#hero-canvas {
 }
 .report-mockup {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
 }
-.report-mockup-inner {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
+/* iPad shell */
+.ipad-shell {
   position: relative;
+  width: 340px;
+  background: #1c1c1e;
+  border-radius: 36px;
+  padding: 18px 14px;
+  box-shadow:
+    0 0 0 1.5px #3a3a3c,
+    0 0 0 3px #1c1c1e,
+    0 30px 80px rgba(0,0,0,0.7),
+    0 60px 120px rgba(0,0,0,0.4);
+  transform: perspective(1200px) rotateY(-10deg) rotateX(3deg);
+  transition: transform 0.7s var(--ease);
+}
+.report-mockup:hover .ipad-shell {
+  transform: perspective(1200px) rotateY(-3deg) rotateX(1deg);
+}
+/* Top camera bar */
+.ipad-camera {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.ipad-camera-dot {
+  width: 7px; height: 7px;
+  background: #3a3a3c;
+  border-radius: 50%;
+}
+/* Screen */
+.ipad-screen {
+  background: #ffffff;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 40px 120px rgba(0,0,0,0.5), 0 0 0 1px var(--border);
-  transform: perspective(1000px) rotateY(-8deg) rotateX(2deg);
-  transition: transform 0.6s var(--ease);
+  position: relative;
 }
-.report-mockup:hover .report-mockup-inner {
-  transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+/* Home button bar */
+.ipad-home {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
-.report-mockup-inner::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,193,7,0.5), transparent);
+.ipad-home-bar {
+  width: 60px; height: 4px;
+  background: #3a3a3c;
+  border-radius: 2px;
 }
-.report-mockup img {
-  width: 100%;
-  display: block;
-  border-radius: 8px;
-}
-.report-glow {
+/* Glow behind iPad */
+.ipad-glow {
   position: absolute;
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(255,193,7,0.15) 0%, transparent 70%);
-  top: -50px; right: -50px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,193,7,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
+  z-index: -1;
 }
+
+/* ── REPORT CONTENT ON SCREEN ── */
+.report-screen {
+  font-family: 'DM Sans', sans-serif;
+  background: #f8f8f8;
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+}
+.report-header {
+  background: #1a2332;
+  padding: 12px 14px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.report-header-title {
+  font-size: 7px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.report-header-badge {
+  font-size: 6px;
+  color: #FFC107;
+  border: 1px solid #FFC107;
+  padding: 2px 6px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}
+.report-body { padding: 10px 14px; flex: 1; }
+.report-section-title {
+  font-size: 6px;
+  font-weight: 600;
+  color: #1a2332;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.report-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.report-row-label { font-size: 6px; color: #555; font-weight: 300; }
+.report-row-value { font-size: 6px; color: #1a2332; font-weight: 500; }
+.report-row-value.gold { color: #c8960c; font-weight: 600; }
+.report-divider { height: 1px; background: #e8e8e8; margin: 8px 0; }
+.report-value-box {
+  background: #1a2332;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.report-value-label { font-size: 6px; color: rgba(255,255,255,0.7); letter-spacing: 1px; text-transform: uppercase; }
+.report-value-num { font-size: 14px; color: #FFC107; font-weight: 600; letter-spacing: -0.5px; }
+.report-chart {
+  margin-top: 8px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 36px;
+}
+.report-bar {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+}
+.report-bar-label {
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5px;
+  color: #888;
+  white-space: nowrap;
+}
+.report-comps {
+  margin-top: 14px;
+}
+.report-comp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 3px;
+  padding: 4px 6px;
+  margin-bottom: 3px;
+  border: 1px solid #eee;
+}
+.report-comp-address { font-size: 5.5px; color: #444; }
+.report-comp-price { font-size: 6px; font-weight: 600; color: #1a2332; }
+.report-comp-adj { font-size: 5px; color: #27ae60; }
 
 /* ════════════════════════════════════════════
    CONTACT
@@ -1218,9 +1349,101 @@ footer {
         </a>
       </div>
       <div class="report-mockup reveal-right">
-        <div class="report-glow"></div>
-        <div class="report-mockup-inner">
-          <img src="https://static.wixstatic.com/media/43c038_28a5f869edd243ad83e332d3f2ba8e88~mv2_d_1204_1588_s_2.png/v1/fill/w_645,h_850,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/43c038_28a5f869edd243ad83e332d3f2ba8e88~mv2_d_1204_1588_s_2.png" alt="Sample Appraisal Report"/>
+        <div class="ipad-glow"></div>
+        <div class="ipad-shell">
+          <div class="ipad-camera"><div class="ipad-camera-dot"></div></div>
+          <div class="ipad-screen">
+            <div class="report-screen">
+
+              <!-- Report Header -->
+              <div class="report-header">
+                <div class="report-header-title">Uniform Residential Appraisal</div>
+                <div class="report-header-badge">CERTIFIED</div>
+              </div>
+
+              <div class="report-body">
+
+                <!-- Subject Property -->
+                <div class="report-section-title">Subject Property</div>
+                <div class="report-row">
+                  <span class="report-row-label">Address</span>
+                  <span class="report-row-value">123 Main St, Star, ID</span>
+                </div>
+                <div class="report-row">
+                  <span class="report-row-label">Legal Description</span>
+                  <span class="report-row-value">Sample Property</span>
+                </div>
+                <div class="report-row">
+                  <span class="report-row-label">GLA</span>
+                  <span class="report-row-value">2,184 sq ft</span>
+                </div>
+                <div class="report-row">
+                  <span class="report-row-label">Year Built</span>
+                  <span class="report-row-value">2019</span>
+                </div>
+                <div class="report-row">
+                  <span class="report-row-label">Effective Date</span>
+                  <span class="report-row-value">Feb 24, 2026</span>
+                </div>
+
+                <!-- Opinion of Value -->
+                <div class="report-value-box">
+                  <div class="report-value-label">Opinion of Value</div>
+                  <div class="report-value-num">$487,000</div>
+                </div>
+
+                <!-- Market Chart -->
+                <div class="report-section-title" style="margin-top:10px;">Market Trend — 12 Months</div>
+                <div class="report-chart">
+                  <div class="report-bar" style="height:55%;background:#d0e8f0;"><span class="report-bar-label">Mar</span></div>
+                  <div class="report-bar" style="height:58%;background:#b8d8ea;"><span class="report-bar-label">Apr</span></div>
+                  <div class="report-bar" style="height:62%;background:#9ec8e0;"><span class="report-bar-label">May</span></div>
+                  <div class="report-bar" style="height:60%;background:#9ec8e0;"><span class="report-bar-label">Jun</span></div>
+                  <div class="report-bar" style="height:65%;background:#7ab8d4;"><span class="report-bar-label">Jul</span></div>
+                  <div class="report-bar" style="height:70%;background:#5aa0c0;"><span class="report-bar-label">Aug</span></div>
+                  <div class="report-bar" style="height:72%;background:#4090b4;"><span class="report-bar-label">Sep</span></div>
+                  <div class="report-bar" style="height:75%;background:#2e80a8;"><span class="report-bar-label">Oct</span></div>
+                  <div class="report-bar" style="height:78%;background:#1a7099;"><span class="report-bar-label">Nov</span></div>
+                  <div class="report-bar" style="height:80%;background:#0e608a;"><span class="report-bar-label">Dec</span></div>
+                  <div class="report-bar" style="height:85%;background:#FFC107;"><span class="report-bar-label" style="color:#c8960c;font-weight:600;">Jan</span></div>
+                  <div class="report-bar" style="height:88%;background:#FFC107;"><span class="report-bar-label" style="color:#c8960c;font-weight:600;">Feb</span></div>
+                </div>
+
+                <!-- Comparables -->
+                <div class="report-comps" style="margin-top:20px;">
+                  <div class="report-section-title">Comparable Sales</div>
+                  <div class="report-comp-row">
+                    <span class="report-comp-address">456 Oak Ave, Eagle, ID</span>
+                    <span class="report-comp-price">$472,000</span>
+                    <span class="report-comp-adj">+$8,200</span>
+                  </div>
+                  <div class="report-comp-row">
+                    <span class="report-comp-address">789 Elm St, Meridian, ID</span>
+                    <span class="report-comp-price">$495,500</span>
+                    <span class="report-comp-adj">−$4,100</span>
+                  </div>
+                  <div class="report-comp-row">
+                    <span class="report-comp-address">321 Pine Rd, Star, ID</span>
+                    <span class="report-comp-price">$481,000</span>
+                    <span class="report-comp-adj">+$2,800</span>
+                  </div>
+                </div>
+
+                <!-- Appraiser -->
+                <div class="report-divider"></div>
+                <div class="report-row" style="margin-top:4px;">
+                  <span class="report-row-label">Appraiser</span>
+                  <span class="report-row-value">Todd Myers, CRA #4328</span>
+                </div>
+                <div class="report-row">
+                  <span class="report-row-label">Firm</span>
+                  <span class="report-row-value gold">TKM Appraisals LLC</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="ipad-home"><div class="ipad-home-bar"></div></div>
         </div>
       </div>
     </div>
@@ -1253,8 +1476,6 @@ footer {
           <span class="city-tag">Kuna</span>
           <span class="city-tag">Garden City</span>
           <span class="city-tag">Hidden Springs</span>
-          <span class="city-tag">Micron</span>
-          <span class="city-tag">Huston</span>
         </div>
       </div>
 
@@ -1598,18 +1819,18 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 });
 
 // ══════════════════════════════════════
-// REPORT MOCKUP — MOUSE PARALLAX TILT
+// IPAD MOCKUP — MOUSE PARALLAX TILT
 // ══════════════════════════════════════
-const mockup = document.querySelector('.report-mockup-inner');
-if (mockup) {
+const ipadShell = document.querySelector('.ipad-shell');
+if (ipadShell) {
   document.querySelector('.report-mockup').addEventListener('mousemove', e => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mockup.style.transform = `perspective(1000px) rotateY(${x * 12}deg) rotateX(${-y * 6}deg)`;
+    ipadShell.style.transform = `perspective(1200px) rotateY(${x * 16}deg) rotateX(${-y * 8}deg)`;
   });
   document.querySelector('.report-mockup').addEventListener('mouseleave', () => {
-    mockup.style.transform = 'perspective(1000px) rotateY(-8deg) rotateX(2deg)';
+    ipadShell.style.transform = 'perspective(1200px) rotateY(-10deg) rotateX(3deg)';
   });
 }
 </script>

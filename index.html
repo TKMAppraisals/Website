@@ -4,6 +4,79 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>TKM Appraisals LLC — Todd Myers, Certified Residential Appraiser</title>
+
+<!-- Meta Description -->
+<meta name="description" content="Todd Myers is a Certified Residential Appraiser serving Boise, Eagle, Star, Meridian, Nampa, Caldwell, Emmett and the Treasure Valley. Call 208-991-4133 to schedule your residential appraisal."/>
+<meta name="keywords" content="residential appraiser Boise, certified residential appraiser Idaho, home appraisal Treasure Valley, real estate appraisal Ada County, appraisal Canyon County, appraisal Gem County, Todd Myers appraiser, TKM Appraisals"/>
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="Todd Myers, Certified Residential Appraiser"/>
+
+<!-- Open Graph (controls link previews on Facebook, iMessage, LinkedIn) -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://www.tkmappraisals.com/"/>
+<meta property="og:title" content="TKM Appraisals LLC — Todd Myers, Certified Residential Appraiser"/>
+<meta property="og:description" content="Todd Myers is a Certified Residential Appraiser serving the Treasure Valley including Boise, Eagle, Star, Meridian, Nampa, Caldwell, and Emmett. Accurate, well-supported residential appraisals backed by rigorous market analysis."/>
+<meta property="og:image" content="https://www.tkmappraisals.com/Capital_Logo_Square.jpg"/>
+<meta property="og:site_name" content="TKM Appraisals LLC"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TKM Appraisals LLC — Todd Myers, Certified Residential Appraiser"/>
+<meta name="twitter:description" content="Certified Residential Appraiser serving the Treasure Valley. Accurate, well-supported residential appraisals. Call 208-991-4133."/>
+<meta name="twitter:image" content="https://www.tkmappraisals.com/Capital_Logo_Square.jpg"/>
+
+<!-- Schema Structured Data — Local Business -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "TKM Appraisals LLC",
+  "description": "Todd Myers is a Certified Residential Appraiser providing accurate, well-supported residential appraisals across Ada County, Canyon County, and southern Gem County in Idaho.",
+  "url": "https://www.tkmappraisals.com",
+  "telephone": "+1-208-991-4133",
+  "email": "Todd@TKMAppraisals.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Star",
+    "addressRegion": "ID",
+    "postalCode": "83669",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 43.6930,
+    "longitude": -116.4816
+  },
+  "areaServed": [
+    "Boise, ID", "Meridian, ID", "Eagle, ID", "Star, ID", "Kuna, ID",
+    "Garden City, ID", "Nampa, ID", "Caldwell, ID", "Middleton, ID",
+    "Notus, ID", "Parma, ID", "Wilder, ID", "Greenleaf, ID", "Melba, ID",
+    "Marsing, ID", "Homedale, ID", "Emmett, ID", "Letha, ID"
+  ],
+  "employee": {
+    "@type": "Person",
+    "name": "Todd Myers",
+    "jobTitle": "Certified Residential Appraiser",
+    "hasCredential": {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "Certified Residential Appraiser",
+      "recognizedBy": {
+        "@type": "Organization",
+        "name": "State of Idaho"
+      },
+      "identifier": "CRA #4328"
+    }
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "08:00",
+    "closes": "17:00"
+  },
+  "priceRange": "$$",
+  "sameAs": [
+    "https://www.facebook.com/TKMAppraisals/"
+  ]
+}
+</script>
 <link rel="icon" type="image/x-icon" href="favicon.ico"/>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png"/>
@@ -32,6 +105,8 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
+/* Offset all anchor targets so fixed nav doesn't cover headings */
+section[id], div[id] { scroll-margin-top: 80px; }
 body {
   background: var(--bg);
   color: var(--white);
@@ -144,7 +219,22 @@ nav.scrolled {
 }
 .nav-links a:hover { color: var(--white); }
 .nav-links a:hover::after { transform: scaleX(1); }
-.nav-cta {
+.nav-phone {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--off-white);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+  border-right: 1px solid var(--border);
+  padding-right: 28px;
+  margin-right: -8px;
+}
+.nav-phone:hover { color: var(--accent); }
+.nav-phone svg { color: var(--accent); flex-shrink: 0; }
   padding: 10px 24px;
   border: 1px solid rgba(255,193,7,0.4);
   color: var(--accent) !important;
@@ -1111,18 +1201,38 @@ footer {
   background: none;
   border: none;
 }
-.hamburger span { display: block; width: 22px; height: 1.5px; background: var(--white); transition: 0.3s; }
+.hamburger span { display: block; width: 22px; height: 1.5px; background: var(--white); transition: transform 0.3s var(--ease), opacity 0.3s; }
 
 @media (max-width: 1024px) {
   .nav-links { display: none; }
+  .nav-phone { display: none; }
   .hamburger { display: flex; }
   .nav-links.open {
     display: flex; flex-direction: column; gap: 20px;
     position: absolute; top: 72px; left: 0; right: 0;
     background: rgba(8,12,16,0.97); backdrop-filter: blur(20px);
-    padding: 32px 48px;
+    padding: 32px 48px 40px;
     border-bottom: 1px solid var(--border);
+    animation: slideDown 0.3s var(--ease) forwards;
   }
+  .nav-links.open .nav-phone {
+    display: flex;
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+    color: var(--accent);
+    font-size: 15px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* Hamburger animates to X when open */
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .process-header { grid-template-columns: 1fr; gap: 32px; }
   .process-steps { grid-template-columns: 1fr; gap: 2px; }
   .about-grid { grid-template-columns: 1fr; gap: 60px; }
@@ -1169,6 +1279,12 @@ footer {
     <li><a href="#featured-section">Reports</a></li>
     <li><a href="#service-area">Service Area</a></li>
     <li><a href="#contact-section">Contact</a></li>
+    <li>
+      <a href="tel:2089914133" class="nav-phone">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .9h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        208-991-4133
+      </a>
+    </li>
     <li><a href="#contact-section" class="nav-cta">Request Appraisal</a></li>
   </ul>
 </nav>
@@ -1693,9 +1809,13 @@ document.getElementById('copyright-year').textContent = new Date().getFullYear()
 
 document.getElementById('hamburger').addEventListener('click', () => {
   document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
 });
 document.querySelectorAll('.nav-links a').forEach(a => {
-  a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  });
 });
 
 // ══════════════════════════════════════

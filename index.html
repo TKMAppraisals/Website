@@ -1419,7 +1419,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 TKM Appraisals LLC. All rights reserved.</span>
+      <span>© <span id="copyright-year"></span> TKM Appraisals LLC. All rights reserved.</span>
       <span>CRA License #4328 · State of Idaho</span>
     </div>
   </div>
@@ -1473,6 +1473,8 @@ window.addEventListener('scroll', () => {
 // ══════════════════════════════════════
 // HAMBURGER
 // ══════════════════════════════════════
+document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
 document.getElementById('hamburger').addEventListener('click', () => {
   document.getElementById('navLinks').classList.toggle('open');
 });

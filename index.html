@@ -708,7 +708,22 @@ canvas#hero-canvas {
   justify-content: center;
   padding: 40px 20px;
 }
-/* iPad shell */
+/* iPad floating idle animation */
+@keyframes ipadFloat {
+  0%, 100% { transform: perspective(1200px) rotateY(-10deg) rotateX(3deg) translateY(0px); }
+  50% { transform: perspective(1200px) rotateY(-10deg) rotateX(3deg) translateY(-12px); }
+}
+@keyframes ipadFloatMobile {
+  0%, 100% { transform: perspective(1200px) rotateY(0deg) rotateX(0deg) translateY(0px); }
+  50% { transform: perspective(1200px) rotateY(0deg) rotateX(0deg) translateY(-12px); }
+}
+/* Shimmer sweep across the screen */
+@keyframes shimmerSweep {
+  0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(250%) skewX(-20deg); opacity: 0; }
+}
 .ipad-shell {
   position: relative;
   width: 340px;
@@ -722,6 +737,34 @@ canvas#hero-canvas {
     0 60px 120px rgba(0,0,0,0.4);
   transform: perspective(1200px) rotateY(-10deg) rotateX(3deg);
   transition: transform 0.7s var(--ease);
+  animation: ipadFloat 5s ease-in-out infinite;
+  will-change: transform;
+}
+/* Shimmer overlay on the screen */
+.ipad-screen { position: relative; overflow: hidden; }
+.ipad-shimmer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.ipad-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: 0;
+  width: 40%; height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.06) 40%,
+    rgba(255,255,255,0.18) 50%,
+    rgba(255,255,255,0.06) 60%,
+    transparent 100%
+  );
+  animation: shimmerSweep 6s ease-in-out infinite;
+  animation-delay: 2s;
 }
 .report-mockup:hover .ipad-shell {
   transform: perspective(1200px) rotateY(-3deg) rotateX(1deg);
@@ -1236,7 +1279,17 @@ footer {
   .process-header { grid-template-columns: 1fr; gap: 32px; }
   .process-steps { grid-template-columns: 1fr; gap: 2px; }
   .about-grid { grid-template-columns: 1fr; gap: 60px; }
-  .featured-inner { grid-template-columns: 1fr; gap: 60px; }
+  .featured-inner { grid-template-columns: 1fr; gap: 48px; }
+  .report-mockup { justify-content: center; width: 100%; }
+  .ipad-shell {
+    width: min(340px, 85vw);
+    transform: perspective(1200px) rotateY(0deg) rotateX(0deg) !important;
+    animation: ipadFloatMobile 5s ease-in-out infinite !important;
+  }
+  .ipad-shell.gyro-active {
+    animation: none !important;
+    transition: transform 0.1s linear !important;
+  }
   .contact-wrapper { grid-template-columns: 1fr; gap: 60px; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
@@ -1469,6 +1522,7 @@ footer {
         <div class="ipad-shell">
           <div class="ipad-camera"><div class="ipad-camera-dot"></div></div>
           <div class="ipad-screen">
+            <div class="ipad-shimmer"></div>
             <div class="report-screen">
 
               <!-- Report Header -->
@@ -1939,19 +1993,69 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 });
 
 // ══════════════════════════════════════
-// IPAD MOCKUP — MOUSE PARALLAX TILT
+// IPAD — DESKTOP HOVER TILT + MOBILE GYROSCOPE
 // ══════════════════════════════════════
 const ipadShell = document.querySelector('.ipad-shell');
 if (ipadShell) {
-  document.querySelector('.report-mockup').addEventListener('mousemove', e => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    ipadShell.style.transform = `perspective(1200px) rotateY(${x * 16}deg) rotateX(${-y * 8}deg)`;
-  });
-  document.querySelector('.report-mockup').addEventListener('mouseleave', () => {
-    ipadShell.style.transform = 'perspective(1200px) rotateY(-10deg) rotateX(3deg)';
-  });
+
+  // ── DESKTOP: mouse tilt, pause float on hover ──
+  if (window.matchMedia('(hover: hover)').matches) {
+    const mockupEl = document.querySelector('.report-mockup');
+    mockupEl.addEventListener('mouseenter', () => {
+      ipadShell.style.animationPlayState = 'paused';
+    });
+    mockupEl.addEventListener('mouseleave', () => {
+      ipadShell.style.transform = 'perspective(1200px) rotateY(-10deg) rotateX(3deg)';
+      ipadShell.style.animationPlayState = 'running';
+    });
+    mockupEl.addEventListener('mousemove', e => {
+      const rect = mockupEl.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      ipadShell.style.transform = `perspective(1200px) rotateY(${x * 16}deg) rotateX(${-y * 8}deg)`;
+    });
+  }
+
+  // ── MOBILE: gyroscope tilt ──
+  if (window.DeviceOrientationEvent && !window.matchMedia('(hover: hover)').matches) {
+
+    const requestGyro = () => {
+      // iOS 13+ requires permission
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(state => { if (state === 'granted') startGyro(); })
+          .catch(() => {});
+      } else {
+        startGyro();
+      }
+    };
+
+    const startGyro = () => {
+      ipadShell.classList.add('gyro-active');
+      let baseGamma = null, baseBeta = null;
+
+      window.addEventListener('deviceorientation', e => {
+        if (e.gamma === null) return;
+
+        // Calibrate on first reading
+        if (baseGamma === null) {
+          baseGamma = e.gamma;
+          baseBeta = e.beta;
+        }
+
+        const tiltX = Math.max(-20, Math.min(20, e.gamma - baseGamma));
+        const tiltY = Math.max(-15, Math.min(15, (e.beta - baseBeta) * 0.5));
+
+        ipadShell.style.transform =
+          `perspective(1200px) rotateY(${tiltX * 0.8}deg) rotateX(${-tiltY}deg)`;
+      }, { passive: true });
+    };
+
+    // Tap the iPad to activate gyro (needed for iOS permission prompt)
+    ipadShell.addEventListener('click', requestGyro, { once: true });
+    // Also try auto-starting on Android (no permission needed)
+    setTimeout(requestGyro, 500);
+  }
 }
 </script>
 </body>

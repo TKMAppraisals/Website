@@ -104,7 +104,8 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+body { overflow-x: hidden; }
 /* Offset all anchor targets so fixed nav doesn't cover headings */
 section[id], div[id] { scroll-margin-top: 80px; }
 body {
@@ -671,6 +672,7 @@ canvas#hero-canvas {
   background: var(--bg);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 .featured-bg {
   position: absolute; inset: 0;
@@ -707,6 +709,7 @@ canvas#hero-canvas {
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
+  overflow: hidden;
 }
 /* iPad floating idle animation */
 @keyframes ipadFloat {
@@ -2024,64 +2027,6 @@ if (ipadShell) {
 
   // ── MOBILE: gyroscope tilt ──
   if (!window.matchMedia('(hover: hover)').matches && window.DeviceOrientationEvent) {
-
-    let gyroRunning = false;
-    let latestGamma = 0, latestBeta = 0;
-    let baseGamma = null, baseBeta = null;
-    let rafId = null;
-
-    const startGyro = () => {
-      if (gyroRunning) return;
-      gyroRunning = true;
-
-      // Add class to disable CSS animation and enable JS transform
-      ipadShell.classList.add('gyro-active');
-
-      window.addEventListener('deviceorientation', e => {
-        if (e.gamma === null || e.beta === null) return;
-        latestGamma = e.gamma;
-        latestBeta  = e.beta;
-
-        // Set baseline after 3 readings to let sensor settle
-        if (baseGamma === null) {
-          let count = 0;
-          const settle = setInterval(() => {
-            count++;
-            if (count >= 3) {
-              baseGamma = latestGamma;
-              baseBeta  = latestBeta;
-              clearInterval(settle);
-              tick();
-            }
-          }, 100);
-        }
-      }, { passive: true });
-    };
-
-    const tick = () => {
-      if (!gyroRunning) return;
-      const tiltY = Math.max(-18, Math.min(18, (latestGamma - baseGamma)));
-      const tiltX = Math.max(-12, Math.min(12, (latestBeta  - baseBeta) * 0.4));
-      ipadShell.style.transform =
-        `perspective(1200px) rotateY(${tiltY}deg) rotateX(${-tiltX}deg)`;
-      rafId = requestAnimationFrame(tick);
-    };
-
-    const requestGyro = () => {
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ needs user gesture
-        DeviceOrientationEvent.requestPermission()
-          .then(state => { if (state === 'granted') startGyro(); })
-          .catch(() => {});
-      } else {
-        // Android — no permission needed
-        startGyro();
-      }
-    };
-
-  // ── MOBILE: gyroscope tilt ──
-  if (!window.matchMedia('(hover: hover)').matches && window.DeviceOrientationEvent) {
-
     let gyroRunning = false;
     let gyroActive = false;
     let latestGamma = 0, latestBeta = 0;
@@ -2093,19 +2038,17 @@ if (ipadShell) {
       if (gyroRunning) return;
       gyroRunning = true;
       ipadShell.classList.add('gyro-active');
-
       window.addEventListener('deviceorientation', e => {
         if (e.gamma === null || e.beta === null) return;
         latestGamma = e.gamma;
-        latestBeta  = e.beta;
-
+        latestBeta = e.beta;
         if (baseGamma === null) {
           let count = 0;
           const settle = setInterval(() => {
             count++;
             if (count >= 3) {
               baseGamma = latestGamma;
-              baseBeta  = latestBeta;
+              baseBeta = latestBeta;
               clearInterval(settle);
               tick();
             }
@@ -2115,41 +2058,32 @@ if (ipadShell) {
     };
 
     const tick = () => {
-      // Only apply tilt when iPad is visible AND not scrolling
       if (gyroActive && !isScrolling) {
-        const tiltY = Math.max(-18, Math.min(18, (latestGamma - baseGamma)));
-        const tiltX = Math.max(-12, Math.min(12, (latestBeta  - baseBeta) * 0.4));
-        ipadShell.style.transform =
-          `perspective(1200px) rotateY(${tiltY}deg) rotateX(${-tiltX}deg)`;
+        const tiltY = Math.max(-18, Math.min(18, latestGamma - baseGamma));
+        const tiltX = Math.max(-12, Math.min(12, (latestBeta - baseBeta) * 0.4));
+        ipadShell.style.transform = 'perspective(1200px) rotateY(' + tiltY + 'deg) rotateX(' + (-tiltX) + 'deg)';
       }
       requestAnimationFrame(tick);
     };
 
-    // Pause gyro effect while user is scrolling
     window.addEventListener('scroll', () => {
       isScrolling = true;
       clearTimeout(scrollTimer);
-      // Resume 150ms after scroll stops
       scrollTimer = setTimeout(() => {
         isScrolling = false;
-        // Re-calibrate baseline after scroll so position feels fresh
         baseGamma = latestGamma;
-        baseBeta  = latestBeta;
+        baseBeta = latestBeta;
       }, 150);
     }, { passive: true });
 
-    // Only activate tilt when iPad section is in view
     const ipadObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         gyroActive = entry.isIntersecting;
         if (gyroActive) {
-          // Re-calibrate every time it comes into view
           baseGamma = latestGamma;
-          baseBeta  = latestBeta;
+          baseBeta = latestBeta;
         } else {
-          // Reset to flat when scrolled away
-          ipadShell.style.transform =
-            'perspective(1200px) rotateY(0deg) rotateX(0deg)';
+          ipadShell.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg)';
         }
       });
     }, { threshold: 0.3 });

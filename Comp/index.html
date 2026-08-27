@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CompAdjuster | TKM Appraisals</title>
+<meta name="description" content="CompAdjuster is a private beta appraisal adjustment support tool from TKM Appraisals."/>
+<link rel="icon" type="image/png" href="compadjuster-icon.png"/>
+<style>
+:root {
+  --ink:#07111f;
+  --muted:#5f6b7b;
+  --line:#d7e0ea;
+  --blue:#0969da;
+  --teal:#12a2b8;
+  --panel:#ffffff;
+  --wash:#eef5fb;
+}
+* { box-sizing:border-box; }
+html { min-height:100%; }
+body {
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(31,178,204,.22), transparent 34%),
+    radial-gradient(circle at 20% 82%, rgba(9,105,218,.16), transparent 30%),
+    linear-gradient(135deg, #f8fbff 0%, #e8f1f8 100%);
+}
+.shell {
+  width:min(1180px, calc(100% - 40px));
+  margin:0 auto;
+  padding:34px 0 54px;
+}
+.topbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:14px 16px;
+  border:1px solid rgba(195,207,220,.82);
+  border-radius:22px;
+  background:rgba(255,255,255,.78);
+  box-shadow:0 22px 70px rgba(15,23,42,.10);
+  backdrop-filter:blur(22px);
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-decoration:none;
+  color:inherit;
+}
+.brand img {
+  width:52px;
+  height:52px;
+  border-radius:14px;
+  object-fit:cover;
+  box-shadow:0 12px 28px rgba(9,105,218,.18);
+}
+.brand-title {
+  font-size:22px;
+  font-weight:900;
+  line-height:1.05;
+}
+.brand-sub {
+  margin-top:3px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:650;
+}
+.nav {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.nav a {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:0 18px;
+  border:1px solid rgba(197,209,222,.86);
+  border-radius:999px;
+  color:#1e293b;
+  font-size:14px;
+  font-weight:800;
+  text-decoration:none;
+  background:rgba(255,255,255,.72);
+}
+.nav a.primary {
+  color:#fff;
+  border-color:#07111f;
+  background:#07111f;
+}
+.hero {
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:28px;
+  align-items:stretch;
+  padding:76px 0 38px;
+}
+.hero-copy {
+  padding:50px 0 38px;
+}
+.kicker {
+  color:#0f766e;
+  font-size:13px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+h1 {
+  max-width:660px;
+  margin:14px 0 18px;
+  font-size:clamp(48px, 7vw, 92px);
+  line-height:.95;
+  letter-spacing:-.04em;
+}
+.lead {
+  max-width:600px;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.55;
+}
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-top:34px;
+}
+.button {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  padding:0 24px;
+  border:1px solid #07111f;
+  border-radius:14px;
+  color:#fff;
+  background:#07111f;
+  font-size:15px;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:0 16px 34px rgba(7,17,31,.18);
+}
+.button.secondary {
+  color:#07111f;
+  border-color:rgba(183,198,214,.96);
+  background:rgba(255,255,255,.78);
+  box-shadow:none;
+}
+.console {
+  min-height:520px;
+  padding:24px;
+  border:1px solid rgba(148,163,184,.5);
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 86% 78%, rgba(9,105,218,.42), transparent 30%),
+    linear-gradient(145deg, #07111f 0%, #0d1728 76%);
+  box-shadow:0 34px 90px rgba(15,23,42,.24);
+}
+.console-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:20px;
+}
+.console-kicker {
+  color:#99d9ff;
+  font-size:11px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+}
+.badge {
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  color:#dbeafe;
+  background:rgba(255,255,255,.12);
+  font-size:12px;
+  font-weight:900;
+}
+.console h2 {
+  margin:0 0 8px;
+  color:#fff;
+  font-size:34px;
+  letter-spacing:-.03em;
+}
+.console p {
+  margin:0;
+  max-width:520px;
+  color:#c9d5e4;
+  line-height:1.5;
+}
+.metric-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:34px;
+}
+.metric {
+  min-height:150px;
+  padding:22px;
+  border-radius:20px;
+  background:rgba(255,255,255,.94);
+}
+.metric label {
+  display:block;
+  color:#1d5fd1;
+  font-size:12px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+}
+.metric strong {
+  display:block;
+  margin-top:18px;
+  color:#07111f;
+  font-size:48px;
+  line-height:.95;
+  letter-spacing:-.04em;
+}
+.metric span {
+  display:block;
+  margin-top:14px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:650;
+}
+.section {
+  margin-top:28px;
+  padding:28px;
+  border:1px solid rgba(195,207,220,.84);
+  border-radius:26px;
+  background:rgba(255,255,255,.78);
+  box-shadow:0 18px 55px rgba(15,23,42,.08);
+}
+.section h2 {
+  margin:0;
+  font-size:28px;
+  letter-spacing:-.03em;
+}
+.section p {
+  margin:8px 0 0;
+  color:var(--muted);
+  line-height:1.55;
+}
+.features {
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:14px;
+  margin-top:22px;
+}
+.feature {
+  padding:18px;
+  border:1px solid rgba(214,224,234,.92);
+  border-radius:18px;
+  background:rgba(248,251,255,.86);
+}
+.feature b {
+  display:block;
+  margin-bottom:7px;
+  font-size:15px;
+}
+.feature span {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45;
+}
+.foot {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:28px;
+  color:var(--muted);
+  font-size:13px;
+}
+@media (max-width: 900px) {
+  .topbar,
+  .foot {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .hero,
+  .features {
+    grid-template-columns:1fr;
+  }
+  .hero-copy { padding:30px 0 0; }
+  .console { min-height:auto; }
+  .metric-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img src="compadjuster-icon.png" alt="CompAdjuster icon"/>
+      <div>
+        <div class="brand-title">CompAdjuster</div>
+        <div class="brand-sub">Residential adjustment support</div>
+      </div>
+    </a>
+    <nav class="nav" aria-label="CompAdjuster navigation">
+      <a href="/">TKM Appraisals</a>
+      <a class="primary" href="https://comp.tkmappraisals.com">Open Beta</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="kicker">Private appraiser beta</div>
+      <h1>Adjustment support that keeps the math with the workfile.</h1>
+      <p class="lead">CompAdjuster turns land sales and selected comparables into clear, defensible adjustment support for residential appraisal reports.</p>
+      <div class="actions">
+        <a class="button" href="https://comp.tkmappraisals.com">Open CompAdjuster</a>
+        <a class="button secondary" href="mailto:Todd@TKMAppraisals.com?subject=CompAdjuster%20Beta%20Access">Request Beta Access</a>
+      </div>
+    </div>
+    <div class="console" aria-label="CompAdjuster preview">
+      <div class="console-head">
+        <div class="console-kicker">Decision Console</div>
+        <div class="badge">Private reports</div>
+      </div>
+      <h2>Current Adjustment Schedule</h2>
+      <p>Each beta user signs in with their own account, imports their own data, and reopens saved reports exactly where they left off.</p>
+      <div class="metric-grid">
+        <div class="metric">
+          <label>Land $/SF</label>
+          <strong>$4.25</strong>
+          <span>Reconciled site adjustment</span>
+        </div>
+        <div class="metric">
+          <label>GLA $/SF</label>
+          <strong>$95</strong>
+          <span>Market-weighted indication</span>
+        </div>
+        <div class="metric">
+          <label>Bathroom $/Full</label>
+          <strong>$11k</strong>
+          <span>Half baths apply at 50%</span>
+        </div>
+        <div class="metric">
+          <label>Garage $/Space</label>
+          <strong>$12k</strong>
+          <span>Per attached garage space</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Built for appraisal workflow</h2>
+    <p>The beta app is designed around the practical sequence of subject entry, land analysis, comparable review, adjustment reconciliation, and report-ready export.</p>
+    <div class="features">
+      <div class="feature">
+        <b>Private report memory</b>
+        <span>Saved reports are isolated by login, including subject facts, imported land sales, comps, reconciled adjustments, and export support.</span>
+      </div>
+      <div class="feature">
+        <b>Defensible support</b>
+        <span>Market methods remain the anchor, with sensitivity, bracketing, and central range checks available for additional support.</span>
+      </div>
+      <div class="feature">
+        <b>Professional exports</b>
+        <span>Create concise summary exhibits, fuller support reports, or workfile packages for review and lender follow-up.</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>CompAdjuster private beta by TKM Appraisals.</span>
+    <span>For access: Todd@TKMAppraisals.com</span>
+  </footer>
+</main>
+</body>
+</html>
